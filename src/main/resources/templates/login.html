@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изучение китайского языка</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-image: url('../static/chinese-characters-paper-ink.jpg'); /* Замените на путь к вашему изображению */
+            background-size: cover;
+            background-position: center;
+            color: #000; /* Черный цвет текста */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .scroll-container {
+            background-color: rgba(255, 255, 255, 0.4); /* Прозрачность для фона формы */
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .header {
+            background-color: #8e44ad; /* Фиолетовый цвет фона для заголовка */
+            color: #fff; /* Белый цвет текста в заголовке */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 15px; /* Уменьшенный отступ по краям контейнера */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            width: 300px;
+            text-align: center;
+            margin: 10px auto; /* Уменьшенный верхний и нижний отступ */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 0 0;
+            box-sizing: border-box;
+            border: 1px solid #8e44ad; /* Фиолетовый цвет */
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #8e44ad; /* Фиолетовый цвет */
+            color: #fff; /* Белый цвет текста */
+            padding: 10px 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #6c3483; /* Темный фиолетовый цвет */
+        }
+
+        .signup-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .signup-link a {
+            color: #8e44ad; /* Фиолетовый цвет */
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="scroll-container">
+    <div class="header">
+        <h2>Авторизация <br> Школа китайского языка</h2>
+    </div>
+    <div th:if="${param.error}">
+        <p style="color: red;">Invalid username or password</p>
+    </div>
+    <div class="container">
+        <form th:action="@{/login}" method="post">
+            <label for="username">Логин:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Войти</button>
+        </form>
+        <div class="signup-link">
+            <p>Нет аккаунта? <a th:href="@{/registration}" method="get">Зарегистрироваться</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

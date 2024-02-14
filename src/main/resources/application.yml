@@ -1,0 +1,14 @@
+server:
+  port: ${PORT:8088}
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chinese_course
+    username: arina
+    password: "0000"
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: db/changelog/master.xml
+
