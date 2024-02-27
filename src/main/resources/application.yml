@@ -12,3 +12,8 @@ spring:
   liquibase:
     change-log: db/changelog/master.xml
 
+logging:
+  level:
+    org:
+      springframework: debug
+

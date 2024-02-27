@@ -7,10 +7,10 @@
     <style>
         body {
             font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background-image: url('../static/chinese-characters-paper-ink.jpg'); /* Замените на путь к вашему изображению */
+            background-image: url('/static/images/characters-ink.png'); /* Замените на путь к вашему изображению */
             background-size: cover;
             background-position: center;
-            color: #000; /* Черный цвет текста */
+            color: #000000; /* Черный цвет текста */
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -84,11 +84,12 @@
         }
     </style>
 </head>
-<body>
+<body background="/static/images/characters-ink.png">
 <div class="scroll-container">
     <div class="header">
         <h2>Авторизация <br> Школа китайского языка</h2>
     </div>
+
     <div th:if="${param.error}">
         <p style="color: red;">Invalid username or password</p>
     </div>

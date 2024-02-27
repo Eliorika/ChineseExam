@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegistrationRequest {
+public class UserInfoRequest {
 
     @Email(message = "Provide valid email")
     @NotEmpty(message = "Provide a email")

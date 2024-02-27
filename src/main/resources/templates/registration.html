@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background-image: url('../static/chinese-characters-paper-ink.jpg'); /* Замените на путь к вашему изображению */
+            background-image: url('../static/images/characters-ink.png'); /* Замените на путь к вашему изображению */
             background-size: cover;
             background-position: center;
             color: #000; /* Черный цвет текста */
@@ -98,6 +98,7 @@
             <span class="validationError"
                   th:if="${#fields.hasErrors('email')}"
                   th:errors="*{email}">Ошибка!</span>
+            <div th:if="${error}" class="error" th:text="${error}"></div>
 
             <label for="password">Пароль:</label>
             <input type="password" id="password" name="password" required th:field="*{password}">

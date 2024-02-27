@@ -3,34 +3,31 @@ package ru.rsreu.ChineseCourse.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
-import ru.rsreu.ChineseCourse.dto.request.UserInfoRequest;
-import ru.rsreu.ChineseCourse.exception.AlreadyExistsException;
-import ru.rsreu.ChineseCourse.service.IUserService;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ru.rsreu.ChineseCourse.dto.request.UserInfoRequest;
+import ru.rsreu.ChineseCourse.service.IUserService;
+
+import java.security.Principal;
 
 @Controller
-@RequestMapping("/registration")
+@RequestMapping("/user-change")
 @RequiredArgsConstructor
-public class RegistrationController {
-
+public class ChangeUserInfoController {
     private final IUserService userService;
 
-
     @PostMapping
-    public String registration(@Valid @ModelAttribute("userRegReq") UserInfoRequest req, Errors errors, Model model){
+    public String updateUserInfo(@Valid @ModelAttribute("userRegReq") UserInfoRequest req, Principal principal, Errors errors){
 
         if(errors.hasErrors()){
-            return "registration";
-        }
-        try {
-            userService.createUser(req);
-        } catch (AlreadyExistsException ex){
-            model.addAttribute("error", ex.getMessage());
-            return "registration";
+            return "pool";
         }
 
+        userService.updateUser(req, principal.getName());
         return "redirect:/login";
     }
 
@@ -39,4 +36,5 @@ public class RegistrationController {
         model.addAttribute("userRegReq", new UserInfoRequest());
         return "registration";
     }
+
 }

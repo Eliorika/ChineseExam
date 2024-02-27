@@ -16,8 +16,6 @@ import java.security.Principal;
 @RequestMapping("/login")
 public class LoginController {
 
-    private IUserService userService;
-
     @GetMapping
     public String login(){
         return "login";
@@ -25,11 +23,6 @@ public class LoginController {
 
     @PostMapping
     public String auth(){
-//        if(principal != null) {
-//            User user = userService.findByEmail(principal.getName());
-//            if (user != null)
-//                return "user_page";
-//        }
         return "user_page";
 
     }

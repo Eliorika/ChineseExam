@@ -1,22 +1,24 @@
 package ru.rsreu.ChineseCourse.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.rsreu.ChineseCourse.model.enums.SystemRole;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "users")
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,12 @@ public class User implements UserDetails {
 
     @UpdateTimestamp
     private Date lastActivity;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> courses;
+
+    @Enumerated(EnumType.STRING)
+    private SystemRole systemRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
