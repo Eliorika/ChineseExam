@@ -6,12 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.rsreu.ChineseCourse.dto.request.CreateCourseRequest;
+import ru.rsreu.ChineseCourse.dto.request.UserInfoRequest;
 import ru.rsreu.ChineseCourse.dto.response.CourseInfoResponse;
 import ru.rsreu.ChineseCourse.model.User;
+import ru.rsreu.ChineseCourse.model.enums.CourseDifficulty;
 import ru.rsreu.ChineseCourse.service.ICourseService;
 import ru.rsreu.ChineseCourse.service.IUserService;
 
@@ -27,10 +28,18 @@ public class CourseController {
 
     @PreAuthorize("isSuperAdmin()")
     @PostMapping("/create")
-    public ResponseEntity<CourseInfoResponse> createCourse(@Valid @RequestBody CreateCourseRequest req, Principal principal){
+    public String createCourse(@Valid @ModelAttribute CreateCourseRequest req, Principal principal){
         User user = userService.findByEmail(principal.getName());
         var course = courseService.createCourse(req, user);
         var response = CourseInfoResponse.fromCourse(course);
-        return ResponseEntity.ok(response);
+
+        return "redirect:/course";
+    }
+
+    @GetMapping
+    public String registration(Model model){
+        model.addAttribute("courseInfo", new CreateCourseRequest());
+        model.addAttribute("difficulties", CourseDifficulty.values());
+        return "course";
     }
 }

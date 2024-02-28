@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление курсами</title>
+</head>
+<body>
+<h1>Управление курсами</h1>
+
+<!-- Форма для создания курса -->
+<h2>Создать курс</h2>
+<form action="/create_course"  th:action="@{/course/create}" method="post" th:object="${courseInfo}">
+    <label for="course_name">Название курса:</label><br>
+    <input type="text" id="course_name" name="course_name" required th:field="*{courseName}"><br>
+
+    <label for="course_description">Описание курса:</label><br>
+    <textarea id="course_description" name="course_description" required th:field="*{description}"></textarea><br>
+
+    <label for="course_difficulty">Сложность курса:</label><br>
+    <select id="course_difficulty" name="course_difficulty" th:field="${courseInfo.difficulty}">
+        <option th:each="difficulty :${difficulties}" th:value="${difficulty}" th:text="${difficulty}"></option>
+    </select><br>
+
+    <button type="submit">Создать</button>
+</form>
+</body>
+</html>
