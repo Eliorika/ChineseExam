@@ -26,8 +26,8 @@ public class CourseController {
     private final ICourseService courseService;
     private final IUserService userService;
 
-    @PreAuthorize("isSuperAdmin()")
     @PostMapping("/create")
+    @PreAuthorize("isSuperAdmin()")
     public String createCourse(@Valid @ModelAttribute CreateCourseRequest req, Principal principal){
         User user = userService.findByEmail(principal.getName());
         var course = courseService.createCourse(req, user);

@@ -9,4 +9,5 @@ import ru.rsreu.ChineseCourse.model.User;
 public interface CourseRepo extends JpaRepository<Course, Long> {
 
 
+
 }
