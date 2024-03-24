@@ -47,4 +47,10 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private User admin;
+
+    @Override
+    public String toString(){
+        return "Курс " + this.getCourseName()
+                + "\nАдмин: " + this.admin.getUsername();
+    }
 }

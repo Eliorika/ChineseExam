@@ -8,6 +8,8 @@ import ru.rsreu.ChineseCourse.model.User;
 @Repository
 public interface CourseRepo extends JpaRepository<Course, Long> {
 
+    //Course findByCourseName(String name);
+
 
 
 }

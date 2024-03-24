@@ -1,11 +1,18 @@
 package ru.rsreu.ChineseCourse.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.rsreu.ChineseCourse.dto.request.CreateCourseRequest;
+import ru.rsreu.ChineseCourse.dto.request.CourseInfoRequest;
 import ru.rsreu.ChineseCourse.model.Course;
 import ru.rsreu.ChineseCourse.model.User;
 
+import java.util.List;
+
 public interface ICourseService {
 
-    Course createCourse(CreateCourseRequest req, User user);
+    Course createCourse(CourseInfoRequest req, User user);
+    Course updateCourse(CourseInfoRequest req, Long id);
+    Course deleteCourse(Long id);
+
+    List<Course> allCourses();
+
+    Course getById(Long id);
 }

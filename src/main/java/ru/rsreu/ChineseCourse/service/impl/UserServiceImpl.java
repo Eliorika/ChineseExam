@@ -1,12 +1,16 @@
 package ru.rsreu.ChineseCourse.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.rsreu.ChineseCourse.dto.UserInfo;
+import ru.rsreu.ChineseCourse.dto.request.ChangePasswordRequest;
 import ru.rsreu.ChineseCourse.dto.request.UserInfoRequest;
 import ru.rsreu.ChineseCourse.exception.AlreadyExistsException;
 import ru.rsreu.ChineseCourse.model.User;
@@ -16,6 +20,7 @@ import ru.rsreu.ChineseCourse.service.IUserService;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements IUserService {
     private UserRepo userRepo;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -44,12 +49,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User updateUser(UserInfoRequest req, String username) {
+    public User updateUser(UserInfo req, String username) {
 
         User user = findByEmail(username);
         user.setFirstName(req.getFirstName());
         user.setLastName(req.getLastName());
-        user.setPassword(bCryptPasswordEncoder.encode(req.getPassword()));
+        //user.setPassword(bCryptPasswordEncoder.encode(req.getPassword()));
         return userRepo.save(user);
     }
 
@@ -60,8 +65,20 @@ public class UserServiceImpl implements IUserService {
         if(user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
         return user;
+    }
+
+    @Override
+    public void changePassword(String email, ChangePasswordRequest changePasswordRequest) {
+        log.info("User {} changing password", email);
+        User user = findByEmail(email);
+
+        if (bCryptPasswordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
+            userRepo.save(user);
+        } else {
+            throw new HttpMessageNotReadableException("Неверный пароль");
+        }
     }
 
 }
