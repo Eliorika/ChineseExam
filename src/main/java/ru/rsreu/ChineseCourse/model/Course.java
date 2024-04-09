@@ -48,6 +48,9 @@ public class Course {
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private User admin;
 
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
+    private List<Lesson> lessons;
+
     @Override
     public String toString(){
         return "Курс " + this.getCourseName()

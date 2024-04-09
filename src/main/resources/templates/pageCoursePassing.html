@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant:ital,wght@0,1..1000;1,1..1000&display=swap"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/style/style.css}" rel="stylesheet">
+    <link th:href="@{/style/pageCoursePassing.css}" rel="stylesheet">
+</head>
+<body>
+<!--Верхнее меню-->
+<header>
+    <div class="logo">
+        <img th:src="@{/images/logo.svg}" alt="logo" class="logo__img">
+        <p>Школа китайского языка</p>
+    </div>
+    <nav id="menu">
+        <ul class="menu">
+            <li><a th:href="@{/user}">Личный кабинет</a></li>
+            <li><a th:href="@{/courses}">Курсы</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="course" class="container">
+    <div>
+        <div class="course__title">
+            <h2><span th:text="${course.courseName}"></span></h2>
+            <h3><span th:text="'О курсе: ' + ${course.description}"></span></h3>
+            <h4><span th:text="'Сложность: ' + ${course.difficulty}"></span></h4>
+        </div>
+
+
+        <div class="course__block" th:each="lesson : ${course.lessons}">
+            <div style="display: flex; justify-content:space-between; align-items: center; width: 100%; margin-top: 20px;margin-bottom: 20px;">
+                <div class="course__block__name">
+                    <h4><span th:text="${lesson.name}"></span></h4>
+                    <div class="guide" th:data-popup="'popup_'+ ${lesson.id}" onclick="openPopup(this)">
+                        <img th:src="@{/images/guide.svg}" alt="guide">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="course__block__test" th:each="test : ${lesson.tests}">
+                        <form th:action="@{'/test/' + ${test.id}}" method="get">
+                            <button th:classappend="${test.isAvailable} ? (${test.isPassed} ? 'passed' : 'available') : 'disabled'"
+                                    th:text="${test.id}" th:disabled="${!test.isAvailable}"></button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="popup" th:id="'popup_'+ ${lesson.id}">
+                <div class="popup__container" >
+                    <p class="popup__close" th:data-popup="'popup_'+ ${lesson.id}"  onclick="closePopup(this)">X</p>
+                    <div th:each="material : ${lesson.resourceMaterialList}">
+
+
+                    <h4><span th:text="${material.materialName}"/></h4>
+
+                    <div>
+                        <pre th:text="${material.materialText}"/>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+<script>
+    function openPopup(element) {
+        //document.querySelector('.popup').style.display = 'flex';
+        var name = element.getAttribute('data-popup');
+        console.log(name)
+        var popup = document.getElementById(name);
+        popup.style.display='flex'
+
+    }
+
+    function closePopup(element) {
+        var name = element.getAttribute('data-popup');
+        console.log(name)
+        var popup = document.getElementById(name);
+        popup.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

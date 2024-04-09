@@ -1,0 +1,96 @@
+#setting-course {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.choose-course {
+    width: 500px;
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.choose-course__card {
+    border: 1px solid #2F205A;
+    box-shadow: 0 0 10px 0 rgba(70, 52, 124, 0.7);
+    color: #2F205A;
+    font-weight: 500;
+    font-size: 20px;
+    padding: 20px 40px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+    position: relative;
+}
+
+.block__settingCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+label {
+    margin-right: 10px;
+}
+
+.block__settingCard input[type="text"] {
+    width: 500px;
+    border-radius: 8px;
+    border: 1px solid #2F205A;
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+.course_close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    align-content: center;
+    text-decoration: none;
+    color: #2F205A;
+    cursor: pointer;
+}
+
+.add_course {
+    width: 400px;
+    background-color: #46347C;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    position: fixed;
+    bottom: 10px;
+    left: 23%;
+    transform: translateX(-50%);
+}
+
+.add_question {
+    width: 600px;
+    background-color: #46347C;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    position: fixed;
+    bottom: 10px;
+    right: 29%;
+    transform: translateX(50%);
+}

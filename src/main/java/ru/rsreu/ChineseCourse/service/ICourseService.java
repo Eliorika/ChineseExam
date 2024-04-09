@@ -1,6 +1,7 @@
 package ru.rsreu.ChineseCourse.service;
 
 import ru.rsreu.ChineseCourse.dto.request.CourseInfoRequest;
+import ru.rsreu.ChineseCourse.dto.response.student.CourseInfoStudentResponse;
 import ru.rsreu.ChineseCourse.model.Course;
 import ru.rsreu.ChineseCourse.model.User;
 
@@ -15,4 +16,8 @@ public interface ICourseService {
     List<Course> allCourses();
 
     Course getById(Long id);
+
+    Course addBlankLesson(Long courseId);
+
+    CourseInfoStudentResponse getStudentCourseInfo(Long courseId, Long userId);
 }

@@ -44,6 +44,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private SystemRole systemRole;
 
+    @OneToMany(mappedBy = "user")
+    private List<AnswerStatistic> statistics;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

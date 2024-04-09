@@ -6,10 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.rsreu.ChineseCourse.dto.request.CourseInfoRequest;
+import ru.rsreu.ChineseCourse.dto.response.student.CourseInfoStudentResponse;
+import ru.rsreu.ChineseCourse.dto.response.student.LessonInfoStudentResponse;
+import ru.rsreu.ChineseCourse.dto.response.student.TestInfoStudentResponse;
 import ru.rsreu.ChineseCourse.exception.NotFoundException;
 import ru.rsreu.ChineseCourse.model.Course;
+import ru.rsreu.ChineseCourse.model.Lesson;
+import ru.rsreu.ChineseCourse.model.Test;
 import ru.rsreu.ChineseCourse.model.User;
-import ru.rsreu.ChineseCourse.repo.CourseRepo;
+import ru.rsreu.ChineseCourse.repo.ICourseRepo;
+import ru.rsreu.ChineseCourse.repo.ITestRepo;
 import ru.rsreu.ChineseCourse.service.ICourseService;
 
 import java.util.ArrayList;
@@ -20,7 +26,8 @@ import java.util.List;
 @Transactional
 public class CourseServiceImpl implements ICourseService {
 
-    private final CourseRepo courseRepo;
+    private final ICourseRepo courseRepo;
+    private final ITestRepo testRepo;
     private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     @Override
@@ -69,5 +76,39 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public Course getById(Long id){
         return courseRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public Course addBlankLesson(Long courseId) {
+        Course course = courseRepo.findById(courseId).orElse(null);
+        Lesson lesson = new Lesson();
+        return null;
+    }
+
+    @Override
+    public CourseInfoStudentResponse getStudentCourseInfo(Long courseId, Long userId) {
+        Course course = courseRepo.findById(courseId).orElse(null);
+        if(course == null){
+            log.debug("Course with id " + courseId + " not found");
+            throw new NotFoundException("Course with id " + courseId + " not found");
+        }
+
+        CourseInfoStudentResponse response = CourseInfoStudentResponse.fromCourseBase(course);
+
+        for (Lesson lesson: course.getLessons()){
+            LessonInfoStudentResponse lessonInfoStudentResponse = LessonInfoStudentResponse.fromLessonBase(lesson);
+            boolean isAvailable = true;
+            for(Test test: lesson.getTests()){
+                boolean isPassed = testRepo.isTestCompletedByUser(test.getId(), userId);
+                lessonInfoStudentResponse.getTests()
+                        .add(new TestInfoStudentResponse(test.getId(), isPassed, isAvailable));
+                if(!isPassed){
+                    isAvailable = false;
+                }
+            }
+            response.getLessons().add(lessonInfoStudentResponse);
+        }
+
+        return response;
     }
 }

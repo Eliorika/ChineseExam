@@ -12,6 +12,8 @@ import ru.rsreu.ChineseCourse.model.enums.CourseDifficulty;
 @NoArgsConstructor
 public class CourseInfoRequest {
 
+    private Long id;
+
     @NotBlank
     private String courseName;
 

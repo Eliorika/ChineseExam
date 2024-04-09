@@ -15,14 +15,14 @@ import ru.rsreu.ChineseCourse.dto.request.UserInfoRequest;
 import ru.rsreu.ChineseCourse.exception.AlreadyExistsException;
 import ru.rsreu.ChineseCourse.model.User;
 import ru.rsreu.ChineseCourse.model.enums.SystemRole;
-import ru.rsreu.ChineseCourse.repo.UserRepo;
+import ru.rsreu.ChineseCourse.repo.IUserRepo;
 import ru.rsreu.ChineseCourse.service.IUserService;
 
 @Service
 @AllArgsConstructor
 @Transactional
 public class UserServiceImpl implements IUserService {
-    private UserRepo userRepo;
+    private IUserRepo userRepo;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
