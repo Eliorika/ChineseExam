@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface ILessonService {
 
-    //Lesson create
+    Lesson findById(Long id);
+
+    void logMaterial(Long id, User user);
 }

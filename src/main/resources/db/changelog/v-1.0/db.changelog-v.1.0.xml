@@ -21,4 +21,5 @@
     <include file="130-changeset-add-topic-table.xml" relativeToChangelogFile="true"/>
     <include file="140-changeset-add-topic-variant.xml" relativeToChangelogFile="true"/>
     <include file="150-changeset-add-dictionary-table.xml" relativeToChangelogFile="true"/>
+    <include file="160-add-visibility-columns.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -3,7 +3,7 @@ CREATE TABLE courses (
     course_name varchar(50) not null,
     admin_id bigint not null,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    update TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     description VARCHAR not null,
     difficulty VARCHAR(12) CHECK (Difficulty IN ('BEGINNER', 'INTERMEDIATE', 'ADVANCED')) not null,
 

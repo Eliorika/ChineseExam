@@ -29,6 +29,7 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
+    @Transactional
     public User createUser(UserInfoRequest req) {
         if(userRepo.findByEmail(req.getEmail()) != null)
             throw new AlreadyExistsException("Пользователь с такой почтой уже существует!");
@@ -49,6 +50,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Transactional
     public User updateUser(UserInfo req, String username) {
 
         User user = findByEmail(username);
@@ -69,6 +71,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Transactional
     public void changePassword(String email, ChangePasswordRequest changePasswordRequest) {
         log.info("User {} changing password", email);
         User user = findByEmail(email);

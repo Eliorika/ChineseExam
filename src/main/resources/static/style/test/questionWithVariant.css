@@ -173,6 +173,17 @@
 }
 
 .chosenCard {
-    background-color: rgb(70, 52, 124);
-    color: #f6f4ef
+    background-color: rgb(70, 52, 124) !important;
+    color: #f6f4ef;
+}
+
+.long-sentence {
+    width: 350px;
+    height: 200px;
+}
+
+.long-sentence label{
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
 }

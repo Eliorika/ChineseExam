@@ -26,12 +26,13 @@ import java.util.List;
 @Transactional
 public class CourseServiceImpl implements ICourseService {
 
+    private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
     private final ICourseRepo courseRepo;
     private final ITestRepo testRepo;
-    private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     @Override
-    public Course createCourse(CourseInfoRequest req, User user){
+    @Transactional
+    public Course createCourse(CourseInfoRequest req, User user) {
         Course course = new Course();
         course.setCourseName(req.getCourseName());
         course.setDescription(req.getDescription());
@@ -43,9 +44,10 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
+    @Transactional
     public Course updateCourse(CourseInfoRequest req, Long id) {
         Course course = courseRepo.findById(id).orElse(null);
-        if(course == null){
+        if (course == null) {
             log.debug("Course " + req.getCourseName() + " not found");
             throw new NotFoundException("Course with id " + id + " not found");
         }
@@ -57,9 +59,10 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
+    @Transactional
     public Course deleteCourse(Long id) {
         Course course = courseRepo.findById(id).orElse(null);
-        if(course == null){
+        if (course == null) {
             log.debug("Course with id " + id + " not found");
             throw new NotFoundException("Course with id " + id + " not found");
         }
@@ -68,17 +71,18 @@ public class CourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public List<Course> allCourses(){
+    public List<Course> allCourses() {
         var all = courseRepo.findAll();
         return all;
     }
 
     @Override
-    public Course getById(Long id){
+    public Course getById(Long id) {
         return courseRepo.findById(id).orElse(null);
     }
 
     @Override
+    @Transactional
     public Course addBlankLesson(Long courseId) {
         Course course = courseRepo.findById(courseId).orElse(null);
         Lesson lesson = new Lesson();
@@ -88,25 +92,29 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public CourseInfoStudentResponse getStudentCourseInfo(Long courseId, Long userId) {
         Course course = courseRepo.findById(courseId).orElse(null);
-        if(course == null){
+        if (course == null) {
             log.debug("Course with id " + courseId + " not found");
             throw new NotFoundException("Course with id " + courseId + " not found");
         }
 
         CourseInfoStudentResponse response = CourseInfoStudentResponse.fromCourseBase(course);
 
-        for (Lesson lesson: course.getLessons()){
-            LessonInfoStudentResponse lessonInfoStudentResponse = LessonInfoStudentResponse.fromLessonBase(lesson);
-            boolean isAvailable = true;
-            for(Test test: lesson.getTests()){
-                boolean isPassed = testRepo.isTestCompletedByUser(test.getId(), userId);
-                lessonInfoStudentResponse.getTests()
-                        .add(new TestInfoStudentResponse(test.getId(), isPassed, isAvailable));
-                if(!isPassed){
-                    isAvailable = false;
+        for (Lesson lesson : course.getLessons()) {
+            if (lesson.getIsVisible()) {
+                LessonInfoStudentResponse lessonInfoStudentResponse = LessonInfoStudentResponse.fromLessonBase(lesson);
+                boolean isAvailable = true;
+                for (Test test : lesson.getTests()) {
+                    if (test.getIsVisible()) {
+                        boolean isPassed = testRepo.isTestCompletedByUser(test.getId(), userId);
+                        lessonInfoStudentResponse.getTests()
+                                .add(new TestInfoStudentResponse(test.getId(), isPassed, isAvailable));
+                        if (!isPassed) {
+                            isAvailable = false;
+                        }
+                    }
                 }
+                response.getLessons().add(lessonInfoStudentResponse);
             }
-            response.getLessons().add(lessonInfoStudentResponse);
         }
 
         return response;

@@ -11,6 +11,7 @@
     <link th:href="@{/style/style.css}" rel="stylesheet">
     <link th:href="@{/style/test/questionWithVariant.css}" rel="stylesheet">
     <link th:href="@{/style/test/writeAnswer.css}" rel="stylesheet">
+    <script th:src="@{/js/tests.js}"></script>
 </head>
 <body>
 
@@ -22,19 +23,19 @@
     </div>
     <nav id="menu">
         <ul class="menu">
-            <li><a th:href="@{/user}">Личный кабинет</a></li>
-            <li><a th:href="@{/courses}">Курсы</a></li>
+<!--            <li><a th:href="@{/user}">Личный кабинет</a></li>-->
+<!--            <li><a th:href="@{/courses}">Курсы</a></li>-->
         </ul>
     </nav>
 </header>
 
 <section id="questionWriteAnswer" class="container">
-    <form th:action="@{'/test/'+${question.getTestId()}}" method="post" th:object="${question}">
+    <form th:action="@{'/test/'+${question.getTestId()}}" method="post" th:object="${question}" onsubmit="markFormSubmitted()">
         <input type="hidden" th:field="${question.questionId}"/>
         <input type="hidden" name="skip" value="false">
         <div>
             <div class="question__header">
-                <p class="question_close" onclick="closePopup()">X</p>
+                <p class="question_close" onclick="openPopup()">X</p>
 
                 <progress id="progress" th:value="${progress}" max="100"></progress>
             </div>
@@ -65,7 +66,7 @@
         </div>
 
         <div class="question__footer" th:unless="${isWrong} or ${isRight}">
-            <button class="button skip">Пропустить</button>
+            <button class="button skip" onclick="skipQuestion(true)">Пропустить</button>
             <button class="button" type="submit">Проверить</button>
         </div>
     </form>
@@ -94,49 +95,35 @@
         </form>
     </div>
 
-    <script>
-
-        var isSubmittable = false;
-
-        function skipQuestion(isSkip) {
-            console.log(isSkip)
-            var form = document.getElementById('question_form');
-            // Добавляем параметр запроса skip=true к URL формы
-            form.action = form.action + "?skip=" + isSkip;
-            // Отправляем форму
-            //form.submit();
-        }
-
-        window.addEventListener("beforeunload", function(event) {
-            // Если форма была отправлена, не показывать предупреждение
-            if (!isSubmittable) {
-                // Устанавливаем текст предупреждения
-                var confirmed = confirm("Ваш прогресс будет потерян. Вы уверены?");
-                if (!confirmed) {
-                    // Пользователь отказался сохранить прогресс, поэтому просто возвращаем стандартное сообщение
-                    return;
-                } else {
-                    // Пользователь согласился сохранить прогресс, поэтому выполняем запрос на бэкэнд
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/test/clear", true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            // Действия после успешного выполнения запроса
-                        }
-                    };
-                    xhr.send();
-                }
-            }
-        });
-
-        function markFormSubmitted() {
-            isSubmittable = true;
-        }
-    </script>
-
 </section>
 
+<div class="popup">
+    <div class="popup__container" style="width: 600px; padding-bottom: 25px !important; z-index: 9999;">
+        <p class="popup__close" onclick="closePopup()">X</p>
+
+        <div style="display: flex; justify-content:center; margin-bottom: 35px;">
+            <img th:src="@{/images/sad-2.png}" alt="sad" style="width: 150px;">
+        </div>
+        <h4 style="text-align: center">Вы уверены, что хотите покинуть урок?</h4>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 35px;">
+            <button class="button" style="background-color: #983731; font-size: 16px">Да, я уверен</button>
+            <button class="button" style="font-size: 16px">noooooo</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function openPopup() {
+        document.querySelector('.popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.querySelector('.popup').style.display = 'none';
+    }
+
+</script>
 
 </body>
 </html>

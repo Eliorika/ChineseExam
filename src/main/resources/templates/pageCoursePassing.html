@@ -22,6 +22,13 @@
         <ul class="menu">
             <li><a th:href="@{/user}">Личный кабинет</a></li>
             <li><a th:href="@{/courses}">Курсы</a></li>
+            <li class="exit" >
+                <a th:href="@{/login}">
+                    <svg height="20" viewBox="0 0 14 14" width="20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.55556 14C1.12778 14 0.761444 13.8478 0.456555 13.5434C0.152185 13.2386 0 12.8722 0 12.4444V9.33333H1.55556V12.4444H12.4444V1.55556H1.55556V4.66667H0V1.55556C0 1.12778 0.152185 0.761444 0.456555 0.456555C0.761444 0.152185 1.12778 0 1.55556 0H12.4444C12.8722 0 13.2386 0.152185 13.5434 0.456555C13.8478 0.761444 14 1.12778 14 1.55556V12.4444C14 12.8722 13.8478 13.2386 13.5434 13.5434C13.2386 13.8478 12.8722 14 12.4444 14H1.55556ZM5.83333 10.8889L4.74444 9.76111L6.72778 7.77778H0V6.22222H6.72778L4.74444 4.23889L5.83333 3.11111L9.72222 7L5.83333 10.8889Z"/>
+                    </svg>
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
@@ -86,6 +93,10 @@
         var popup = document.getElementById(name);
         popup.style.display='flex'
 
+        var lesson_id = parseInt(name.replace("popup_","").trim());
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/lesson/'+lesson_id, true); // true для асинхронного запроса
+        xhr.send();
     }
 
     function closePopup(element) {
@@ -93,6 +104,7 @@
         console.log(name)
         var popup = document.getElementById(name);
         popup.style.display = 'none';
+
     }
 </script>
 

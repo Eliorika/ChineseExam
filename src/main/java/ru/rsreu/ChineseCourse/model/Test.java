@@ -27,6 +27,8 @@ public class Test {
     @OneToMany(mappedBy = "test")
     private List<Question> questions;
 
+    private Boolean isVisible;
+
     @ManyToOne
     @JoinColumn(name = "admin_id",
             referencedColumnName = "id", nullable = false)
@@ -38,5 +40,7 @@ public class Test {
             joinColumns = @JoinColumn(name = "lesson_id"),
             inverseJoinColumns = @JoinColumn(name = "material_id"))
     private List<ResourceMaterial> resourceMaterialList;
+
+
 
 }

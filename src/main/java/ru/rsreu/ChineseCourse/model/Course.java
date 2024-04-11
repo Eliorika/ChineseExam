@@ -34,13 +34,14 @@ public class Course {
     @CreationTimestamp
     @Column(updatable = false)
     private Date created;
-//
-//    //TODO: check how update stamp works
-//    @UpdateTimestamp
-//    private Date updated;
+
+
+    @UpdateTimestamp
+    private Date updated;
 
     private String description;
 
+    private Boolean isVisible;
     @Enumerated(EnumType.STRING)
     private CourseDifficulty difficulty;
 

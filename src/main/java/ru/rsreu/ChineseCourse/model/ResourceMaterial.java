@@ -40,4 +40,9 @@ public class ResourceMaterial {
 
     @ManyToMany(mappedBy = "resourceMaterialList")
     private List<Lesson> lessons;
+
+    @OneToMany(mappedBy = "resourceMaterial")
+    private List<UserAccessResourceMaterial> userAccessResourceMaterials;
+
+
 }

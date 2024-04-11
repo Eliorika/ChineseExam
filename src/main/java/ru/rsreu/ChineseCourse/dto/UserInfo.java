@@ -22,6 +22,7 @@ public class UserInfo {
     private String lastName;
 
     private Date registrationDate;
+    private Integer strike;
 
     public static UserInfo fromUser(User user){
         return UserInfo.builder()
@@ -29,6 +30,7 @@ public class UserInfo {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .registrationDate(user.getCreated())
+                .strike(user.getStrike())
                 .build();
     }
 }

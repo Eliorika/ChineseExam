@@ -182,3 +182,14 @@ progress::-webkit-progress-bar {
 .popup__close:hover {
     transform: scale(1.15);
 }
+
+.exit {
+    cursor: pointer;
+    padding: 0 10px;
+    margin: 0 10px;
+}
+
+.exit svg {
+    fill: white;
+}
+

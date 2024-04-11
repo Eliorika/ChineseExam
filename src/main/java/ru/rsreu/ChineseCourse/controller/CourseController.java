@@ -36,8 +36,12 @@ public class CourseController {
 
     @GetMapping()
     public String allCoursesPage(Principal principal,Model model){
-        var all = courseService.allCourses();
+        List<Course> all = new ArrayList<>(courseService.allCourses());
+
         User user = userService.findByEmail(principal.getName());
+        if(!user.getSystemRole().equals(SystemRole.ROLE_SUPER_ADMIN)){
+            all = all.stream().filter(course -> course.getIsVisible()).toList();
+        }
         model.addAttribute("courses", all);
         model.addAttribute("isAdmin", user.getSystemRole().equals(SystemRole.ROLE_SUPER_ADMIN));
         return "courses";

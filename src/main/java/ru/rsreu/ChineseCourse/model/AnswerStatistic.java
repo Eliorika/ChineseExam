@@ -37,7 +37,7 @@ public class AnswerStatistic {
     }
 
     public AnswerStatistic() {
-        System.out.println("new obj");
+
     }
 }
 

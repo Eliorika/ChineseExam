@@ -98,8 +98,8 @@ public class TestServiceImpl implements ITestService {
         List<String> generatedVariants = new ArrayList<>();
         if (translation != null) {
             generatedVariants.add(q.getAnswer() + translation.getVariant());
-            for (int i = 1; i < topicVariants.size(); i++) {
-                if(i >= 4)
+            for (int i = 0; i < topicVariants.size(); i++) {
+                if(i >= 3)
                     break;
                 Variant variant = topicVariants.get(i);
                 generatedVariants.add(q.getAnswer() + variantRepo.getTranslation(variant.getId()).getVariant());

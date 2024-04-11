@@ -8,9 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.rsreu.ChineseCourse.model.enums.SystemRole;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Table(name = "users")
 @Entity
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Column(updatable = false)
     private Date created;
 
-    @UpdateTimestamp
+    //@UpdateTimestamp
     private Date lastActivity;
 
     @ManyToMany(mappedBy = "students")
@@ -79,6 +79,43 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        return true;
+    }
+
+    public int getStrike(){
+        int iStrike = 0;
+        boolean flag = true;
+
+        List<AnswerStatistic> answerStatisticList = this.getStatistics();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        Date currentDate = new Date();
+
+        if(answerStatisticList.stream().anyMatch(a->compareDate(a.getId().getResponseDateTime(),currentDate))){
+            iStrike++;
+        }
+
+        while (flag){
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            Date previousDate = calendar.getTime();
+            if(!answerStatisticList.stream().anyMatch(a->compareDate(a.getId().getResponseDateTime(),previousDate))){
+                break;
+            }
+            iStrike++;
+        }
+
+        return iStrike;
+    }
+
+    private boolean compareDate(Date date1, Date date2){
+        LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (localDate1.isBefore(localDate2)) {
+            return false;
+        } else if (localDate1.isAfter(localDate2)) {
+            return false;
+        }
         return true;
     }
 }

@@ -13,7 +13,7 @@
     <link th:href="@{/style/test/questionListening.css}" rel="stylesheet">
     <script th:src="@{/js/tests.js}"></script>
 </head>
-<body onload="addListeners()">
+<body onload="addListenerChoose()">
 
 <!--Верхнее меню-->
 <header>
@@ -23,8 +23,8 @@
     </div>
     <nav id="menu">
         <ul class="menu">
-            <li><a th:href="@{/user}">Личный кабинет</a></li>
-            <li><a th:href="@{/courses}">Курсы</a></li>
+<!--            <li><a th:href="@{/user}">Личный кабинет</a></li>-->
+<!--            <li><a th:href="@{/courses}">Курсы</a></li>-->
         </ul>
     </nav>
 </header>
@@ -36,7 +36,7 @@
         <input type="hidden" name="skip" value="false">
         <div>
             <div class="question__header">
-                <p class="question_close" onclick="closePopup()">X</p>
+                <p class="question_close" onclick="openPopup()">X</p>
 
                 <progress id="progress" th:value="${progress}" max="100"></progress>
             </div>
@@ -50,16 +50,15 @@
                     <span th:text="${question.cardText}"></span>
                 </div>
 
-                <div style="display: flex; flex-direction: column; align-items: center;">
-                    <div class="cards__answer" th:each="variant : ${question.getVariants()}"
-                         th:classappend="(${question.answer} == ${variant})?
+                <div id="answers" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="cards__answer" th:each="variant : ${question.getVariants()}">
+                        <div class="card" th:data-variant="${variant}" onclick="selectVariant(this)"
+                             th:classappend="(${question.answer} == ${variant})?
                                 (${isRight} ?
                                     'answer_right' :
                                     (${isWrong} ?
                                         'answer__error': ''))
-                                : ''"
-                    >
-                        <div class="card" th:data-variant="${variant}" onclick="selectVariant(this)">
+                                : ''">
                             <label th:data-variant="${variant}" onclick="selectVariant(this)" th:text="${variant}" th:for="'variant_' + ${variant}"></label>
                             <input th:data-variant="${variant}" onclick="selectVariant(this)" type="radio" th:id="'variant_' + ${variant}"
                                    style="display: none;"/>
@@ -67,36 +66,35 @@
                     </div>
                 </div>
 
+
                 <script>
+                    function addListenerChoose() {
+                        const answers = document.getElementById('answers');
 
-                    var isSubmittable = false;
-
-                    function skipQuestion(isSkip) {
-                        console.log(isSkip)
-                        var form = document.getElementById('question_form');
-                        // Добавляем параметр запроса skip=true к URL формы
-                        form.action = form.action + "?skip=" + isSkip;
-                        // Отправляем форму
-                        //form.submit();
+                        answers.addEventListener('click', event => {
+                            let target = event.target;
+                            let isChosen = target.classList.contains('card') || target.tagName == 'LABEL' || target.tagName == 'INPUT';
+                            if (isChosen) {
+                                deleteClassChosen();
+                                chooseCard(target);
+                            }
+                        })
                     }
 
-                    window.addEventListener("beforeunload", function(event) {
-                        // Если форма была отправлена, не показывать предупреждение
-                        if (!isSubmittable) {
-                            // Устанавливаем текст предупреждения
-                            event.returnValue = "Ваш прогресс будет потерян. Вы уверены?";
-                        }
-                    });
-                    function selectVariant(element) {
-                        var variant = element.getAttribute('data-variant');
-                        document.querySelector("input[name='answer']").value = variant;
+                    function chooseCard(target) {
+                        let parent = target.closest('.card');
+
+                        parent.classList.add('chosenCard');
                     }
 
-                    function markFormSubmitted() {
-                        isSubmittable = true;
+                    function deleteClassChosen() {
+                        const cards = document.querySelectorAll('.card');
+
+                        cards.forEach(elem => {
+                            elem.classList.remove('chosenCard');
+                        })
                     }
                 </script>
-
 
             </div>
 
@@ -135,7 +133,32 @@
     </div>
 
 </section>
+<div class="popup">
+    <div class="popup__container" style="width: 600px; padding-bottom: 25px !important;">
+        <p class="popup__close" onclick="closePopup()">X</p>
 
+        <div style="display: flex; justify-content:center; margin-bottom: 35px;">
+            <img th:src="@{/images/sad-2.png}" alt="sad" style="width: 120px;">
+        </div>
+        <h4 style="text-align: center">Вы уверены, что хотите покинуть урок?</h4>
 
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 35px;">
+            <button class="button" style="background-color: #983731; font-size: 16px">Да, я уверен</button>
+            <button class="button" style="font-size: 16px">noooooo</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function openPopup() {
+        document.querySelector('.popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.querySelector('.popup').style.display = 'none';
+    }
+
+</script>
 </body>
 </html>

@@ -88,6 +88,8 @@ public class TestController {
 
         } else if(question.getQuestionType() == QuestionType.NO_CARD_VARIATION){
             return "test/questionWithVariant";
+        } else if(question.getQuestionType() == QuestionType.CLOUD_WITH_VARS){
+            return "test/cloudWithVars.html";
         }
 
         return null;
@@ -133,7 +135,9 @@ public class TestController {
     }
 
     @PostMapping("/clear")
-    private void clear(Principal principal){
+    @ResponseBody
+    public void clear(Principal principal){
+        System.out.println("clear");
         User user = userService.findByEmail(principal.getName());
         questions.remove(user.getId());
         currentTestAnswerStats.remove(user.getId());

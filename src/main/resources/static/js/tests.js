@@ -9,29 +9,39 @@ function skipQuestion(isSkip) {
     //form.submit();
 }
 
-window.addEventListener("beforeunload", function(event) {
-    // Если форма была отправлена, не показывать предупреждение
-    if (!isSubmittable) {
-        // Устанавливаем текст предупреждения
-        var confirmed = confirm("Ваш прогресс будет потерян. Вы уверены?");
-        if (confirmed) {
-            // Пользователь отказался сохранить прогресс, поэтому просто возвращаем стандартное сообщение
-            // Пользователь согласился сохранить прогресс, поэтому выполняем запрос на бэкэнд
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/test/clear", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                    // Действия после успешного выполнения запроса
-                }
-            };
-            xhr.send();
-        } else {
-            event.preventDefault();
-            event.returnValue = '';
-        }
-    }
-});
+// window.addEventListener('beforeunload', function (event) {
+//
+//
+//     console.log(isSubmittable);
+//     if (!isSubmittable) {
+//         var xhr = new XMLHttpRequest();
+//         console.log(xhr);
+//         xhr.open('POST', './clear', true); // true для асинхронного запроса
+//
+//         xhr.send();
+//
+//         //var confirmationMessage = 'Ваш прогресс будет потерян. Хотите уйти?';
+//
+//         // Показываем пользовательское окно с предупреждением и получаем ответ пользователя
+//         //window.confirm(confirmationMessage);
+//
+//         // var xhr = new XMLHttpRequest();
+//         // xhr.open('POST', '/test/clear', true); // true для асинхронного запроса
+//         // xhr.send();
+//         // console.log(userResponse);
+//         // // // Если пользователь подтверждает закрытие окна
+//         // // if (userResponse) {
+//         // //     // Выполняем запрос на бекенд
+//         // //     var xhr = new XMLHttpRequest();
+//         // //     xhr.open('POST', '/test/clear', true); // true для асинхронного запроса
+//         // //     xhr.send();
+//         // // } else {
+//         // //     // Если пользователь отменяет закрытие окна, отменяем действие по умолчанию (закрытие окна)
+//         // //     event.preventDefault();
+//         // // }
+//     }
+// });
+
 
 function selectVariant(element) {
     var variant = element.getAttribute('data-variant');
@@ -49,7 +59,7 @@ function addListeners() {
     answers.addEventListener('click', event => {
         let target = event.target;
         let isChosen = target.classList.contains('card') || target.tagName == 'LABEL' || target.tagName == 'INPUT';
-        if(isChosen) {
+        if (isChosen) {
             deleteClassChosen();
             chooseCard(target);
         }

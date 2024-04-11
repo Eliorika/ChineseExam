@@ -33,6 +33,8 @@ public class Lesson {
             referencedColumnName = "id", nullable = false)
     private User admin;
 
+    private Boolean isVisible;
+
 
     @ManyToMany
     @JoinTable(name = "lesson_reference_materials",
