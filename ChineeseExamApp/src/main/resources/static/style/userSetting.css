@@ -1,0 +1,50 @@
+
+
+
+.block_button_back {
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+#user-setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.personal_data {
+    margin-right: 25px;
+    min-width: 250px;
+    max-width: 600px;
+    width: 50%;
+}
+
+.change_password {
+    max-width: 450px;
+    width: 50%;
+}
+
+.form__personal_data {
+    display: flex;
+    flex-direction: column;
+}
+
+.save {
+    align-self: flex-end;
+    max-width: 100px;
+}
+
+form {
+    width: 100%;
+}
+
+form input {
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #46347C;
+
+}
+
+
+

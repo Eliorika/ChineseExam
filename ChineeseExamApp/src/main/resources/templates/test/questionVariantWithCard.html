@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Listening</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant:ital,wght@0,1..1000;1,1..1000&display=swap"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/style/style.css}" rel="stylesheet">
+    <link th:href="@{/style/test/questionWithVariant.css}" rel="stylesheet">
+    <link th:href="@{/style/test/questionListening.css}" rel="stylesheet">
+    <script th:src="@{/js/tests.js}"></script>
+</head>
+<body onload="addListenerChoose()">
+
+<!--Верхнее меню-->
+<header>
+    <div class="logo">
+        <img th:src="@{/images/logo.svg}" alt="logo" class="logo__img">
+        <p>Школа китайского языка</p>
+    </div>
+    <nav id="menu">
+        <ul class="menu">
+<!--            <li><a th:href="@{/user}">Личный кабинет</a></li>-->
+<!--            <li><a th:href="@{/courses}">Курсы</a></li>-->
+        </ul>
+    </nav>
+</header>
+
+<section id="questionListening" class="container">
+    <form th:action="@{'/test/'+${question.getTestId()}}" method="post" th:object="${question}" onsubmit="markFormSubmitted()" id="question_form">
+        <input type="hidden" th:field="${question.questionId}"/>
+        <input type="hidden" th:field="${question.answer}" name="answer"/>
+        <input type="hidden" name="skip" value="false">
+        <div>
+            <div class="question__header">
+                <p class="question_close" onclick="openPopup()">X</p>
+
+                <progress id="progress" th:value="${progress}" max="100"></progress>
+            </div>
+
+            <div class="question_title" th:field="${question.questionId}">
+                <h3><span th:text="${question.question}" ер></span></h3>
+            </div>
+
+            <div class="question_answers">
+                <div class="card__hieroglyph">
+                    <span th:text="${question.cardText}"></span>
+                </div>
+
+                <div id="answers" style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="cards__answer" th:each="variant : ${question.getVariants()}">
+                        <div class="card" th:data-variant="${variant}" onclick="selectVariant(this)"
+                             th:classappend="(${question.answer} == ${variant})?
+                                (${isRight} ?
+                                    'answer_right' :
+                                    (${isWrong} ?
+                                        'answer__error': ''))
+                                : ''">
+                            <label th:data-variant="${variant}" onclick="selectVariant(this)" th:text="${variant}" th:for="'variant_' + ${variant}"></label>
+                            <input th:data-variant="${variant}" onclick="selectVariant(this)" type="radio" th:id="'variant_' + ${variant}"
+                                   style="display: none;"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <script>
+                    function addListenerChoose() {
+                        const answers = document.getElementById('answers');
+
+                        answers.addEventListener('click', event => {
+                            let target = event.target;
+                            let isChosen = target.classList.contains('card') || target.tagName == 'LABEL' || target.tagName == 'INPUT';
+                            if (isChosen) {
+                                deleteClassChosen();
+                                chooseCard(target);
+                            }
+                        })
+                    }
+
+                    function chooseCard(target) {
+                        let parent = target.closest('.card');
+
+                        parent.classList.add('chosenCard');
+                    }
+
+                    function deleteClassChosen() {
+                        const cards = document.querySelectorAll('.card');
+
+                        cards.forEach(elem => {
+                            elem.classList.remove('chosenCard');
+                        })
+                    }
+                </script>
+
+            </div>
+
+            <hr>
+
+        </div>
+
+        <div class="question__footer" th:unless="${isWrong} or ${isRight}">
+            <button class="button skip">Пропустить</button>
+            <button class="button" type="submit">Проверить</button>
+        </div>
+    </form>
+
+    <div class="question__footer right-answer" th:if="${isRight}">
+        <div class="right-answer__check"><img th:src="@{/images/check-mark-green.svg}" alt="check-mark">
+            Верно!
+        </div>
+
+        <form method="get" onsubmit="markFormSubmitted()">
+            <button class="button beige" th:if="${isWrong} or ${isRight}" >Продолжить</button>
+        </form>
+    </div>
+
+    <div class="question__footer error-answer" th:if="${isWrong}">
+        <div class="error-answer__check">
+            <img th:src="@{/images/error-sign.svg}" alt="check-mark">
+            <div class="warning">
+                <span>Правильный ответ:</span>
+                <span class="warning__right-answer" th:text="${question.rightAnswer}"></span>
+            </div>
+        </div>
+
+        <form method="get" onsubmit="markFormSubmitted()">
+            <button class="button beige" th:if="${isWrong} or ${isRight}">Продолжить</button>
+        </form>
+    </div>
+
+</section>
+<div class="popup">
+    <div class="popup__container" style="width: 600px; padding-bottom: 25px !important;">
+        <p class="popup__close" onclick="closePopup()">X</p>
+
+        <div style="display: flex; justify-content:center; margin-bottom: 35px;">
+            <img th:src="@{/images/sad-2.png}" alt="sad" style="width: 120px;">
+        </div>
+        <h4 style="text-align: center">Вы уверены, что хотите покинуть урок?</h4>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 35px;">
+            <button class="button" style="background-color: #983731; font-size: 16px">Да, я уверен</button>
+            <button class="button" style="font-size: 16px">noooooo</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function openPopup() {
+        document.querySelector('.popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.querySelector('.popup').style.display = 'none';
+    }
+
+</script>
+</body>
+</html>

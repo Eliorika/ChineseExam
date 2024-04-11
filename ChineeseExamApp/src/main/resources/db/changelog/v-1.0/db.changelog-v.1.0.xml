@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="01-changeset-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="10-changeset-courses-table.xml" relativeToChangelogFile="true"/>
+    <include file="20-changeset-courses-students-table.xml" relativeToChangelogFile="true"/>
+    <include file="30-changeset-lessons-table.xml" relativeToChangelogFile="true"/>
+    <include file="31-changeset-create-tests-table.xml" relativeToChangelogFile="true"/>
+    <include file="40-changeset-assessment-material-table.xml" relativeToChangelogFile="true"/>
+    <include file="50-changeset-resource-material-table.xml" relativeToChangelogFile="true"/>
+    <include file="60-changeset-lesson-resource-material-table.xml" relativeToChangelogFile="true"/>
+    <include file="70-changeset-answer-statistic-table.xml" relativeToChangelogFile="true"/>
+    <include file="80-changeset-create-answer-variance-table.xml" relativeToChangelogFile="true"/>
+    <include file="90-changeset-create-answer-variance-table.xml" relativeToChangelogFile="true"/>
+    <include file="100-changeset-create-user-resource-table.xml" relativeToChangelogFile="true"/>
+    <include file="110-changeset-assessment-resource-table.xml" relativeToChangelogFile="true"/>
+    <include file="120-changeset-add-visible-to-course-table.xml" relativeToChangelogFile="true"/>
+    <include file="130-changeset-add-topic-table.xml" relativeToChangelogFile="true"/>
+    <include file="140-changeset-add-topic-variant.xml" relativeToChangelogFile="true"/>
+    <include file="150-changeset-add-dictionary-table.xml" relativeToChangelogFile="true"/>
+    <include file="160-add-visibility-columns.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>
