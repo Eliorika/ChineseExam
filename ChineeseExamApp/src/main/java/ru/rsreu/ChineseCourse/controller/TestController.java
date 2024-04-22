@@ -103,13 +103,20 @@ public class TestController {
     }
 
     @PostMapping("/{testId}")
-    private String validQuestionAnswer(@PathVariable Long testId, Principal principal, @ModelAttribute TestQuestionsDto question, @RequestParam(required = false, defaultValue = "false") Boolean skip){
+    private String validQuestionAnswer(@PathVariable Long testId, Principal principal,
+                                       @ModelAttribute TestQuestionsDto question,
+                                       @RequestParam(required = false, defaultValue = "false") Boolean skip){
         User user = userService.findByEmail(principal.getName());
         if(skip){
             var questionFrom = questions.get(user.getId()).poll();
             questions.get(user.getId()).offer(questionFrom);
         } else {
             AnswerStatistic answerStatistic = new AnswerStatistic();
+            try {
+                questionService.findById(question.getQuestionId());
+            } catch (Exception e){
+                System.out.println("ex");
+            }
             boolean correctness = questionService.checkAnswer(question.getQuestionId(), question.getAnswer());
             answerStatistic.setQuestion(questionService.findById(question.getQuestionId()));
             answerStatistic.setUser(user);

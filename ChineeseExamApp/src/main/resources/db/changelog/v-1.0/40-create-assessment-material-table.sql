@@ -9,7 +9,7 @@ CREATE TABLE assessment_materials (
     is_test boolean default false not null,
     question_type varchar(30) not null,
     card_text varchar(100),
-    is_generated boolean not null,
+    is_generated boolean not null default false,
     topic_id bigint,
     CONSTRAINT FK_AssessmentMaterialLesson FOREIGN KEY (test_id) REFERENCES tests(id),
     CONSTRAINT FK_AssessmentMaterialAdminLogin FOREIGN KEY (admin_id) REFERENCES users(id)

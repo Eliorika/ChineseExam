@@ -16,6 +16,7 @@ import ru.rsreu.ChineseCourse.model.Test;
 import ru.rsreu.ChineseCourse.model.User;
 import ru.rsreu.ChineseCourse.repo.ICourseRepo;
 import ru.rsreu.ChineseCourse.repo.ITestRepo;
+import ru.rsreu.ChineseCourse.repo.IUserRepo;
 import ru.rsreu.ChineseCourse.service.ICourseService;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class CourseServiceImpl implements ICourseService {
     private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
     private final ICourseRepo courseRepo;
     private final ITestRepo testRepo;
+    private final IUserRepo userRepo;
 
     @Override
     @Transactional
@@ -97,12 +99,19 @@ public class CourseServiceImpl implements ICourseService {
             throw new NotFoundException("Course with id " + courseId + " not found");
         }
 
-        CourseInfoStudentResponse response = CourseInfoStudentResponse.fromCourseBase(course);
+        User user = userRepo.findById(userId).orElse(null);
+        if (user == null) {
+            log.debug("User with id " + userId + " not found");
+            throw new NotFoundException("User with id " + userId + " not found");
+        }
 
+        CourseInfoStudentResponse response = CourseInfoStudentResponse.fromCourseBase(course);
+        boolean isAvailable = true;
         for (Lesson lesson : course.getLessons()) {
+
             if (lesson.getIsVisible()) {
                 LessonInfoStudentResponse lessonInfoStudentResponse = LessonInfoStudentResponse.fromLessonBase(lesson);
-                boolean isAvailable = true;
+
                 for (Test test : lesson.getTests()) {
                     if (test.getIsVisible()) {
                         boolean isPassed = testRepo.isTestCompletedByUser(test.getId(), userId);
@@ -117,6 +126,19 @@ public class CourseServiceImpl implements ICourseService {
             }
         }
 
+        response.setCheckedIn(user.getCourses().stream().anyMatch(c-> c.getId() == courseId));
         return response;
+    }
+
+    @Override
+    public void checkInForCourse(Long courseId, User user) {
+        Course course = courseRepo.findById(courseId).orElse(null);
+        if (course == null) {
+            log.debug("Course with id " + courseId + " not found");
+            throw new NotFoundException("Course with id " + courseId + " not found");
+        }
+
+        course.getStudents().add(user);
+        courseRepo.save(course);
     }
 }

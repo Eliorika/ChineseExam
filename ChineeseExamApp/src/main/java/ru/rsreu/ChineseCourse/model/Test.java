@@ -19,7 +19,6 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "lesson_id", nullable = false)
     private Lesson lesson;
@@ -34,13 +33,10 @@ public class Test {
             referencedColumnName = "id", nullable = false)
     private User admin;
 
-
     @ManyToMany
     @JoinTable(name = "lesson_reference_materials",
             joinColumns = @JoinColumn(name = "lesson_id"),
             inverseJoinColumns = @JoinColumn(name = "material_id"))
     private List<ResourceMaterial> resourceMaterialList;
-
-
 
 }

@@ -24,13 +24,11 @@ public class ResourceMaterial {
 
     private String materialName;
 
-
     private String materialText;
 
     @ManyToOne
     @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false)
     private User admin;
-
 
     @CreationTimestamp
     private Date addDate;

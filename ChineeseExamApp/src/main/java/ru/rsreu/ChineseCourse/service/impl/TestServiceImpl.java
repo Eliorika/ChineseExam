@@ -62,8 +62,8 @@ public class TestServiceImpl implements ITestService {
 
             List<Variant> variants = question.getTopic().getVariants();
             Variant rightVariant = variants.get(random.nextInt(variants.size()-1));
-            String textQuestion = question.getCardText() == null? question.getQuestion():question.getCardText();
-            String generatedQuestion = textQuestion + rightVariant.getVariant();
+            //String textQuestion = (question.getCardText() == null || question.getCardText().isBlank())? question.getQuestion():question.getCardText();
+            String generatedQuestion = rightVariant.getVariant();
             if(question.getQuestionType() != QuestionType.NO_CARD_VARIATION){
                 testQuestionsDto.setCardText(generatedQuestion);
                 testQuestionsDto.setQuestion(question.getQuestion());
@@ -105,6 +105,7 @@ public class TestServiceImpl implements ITestService {
                 generatedVariants.add(q.getAnswer() + variantRepo.getTranslation(variant.getId()).getVariant());
             }
         }
+        Collections.shuffle(generatedVariants);
         return generatedVariants;
     }
 

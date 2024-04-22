@@ -20,4 +20,6 @@ public interface ICourseService {
     Course addBlankLesson(Long courseId);
 
     CourseInfoStudentResponse getStudentCourseInfo(Long courseId, Long userId);
+
+    void checkInForCourse(Long courseId, User user);
 }

@@ -35,7 +35,7 @@ public class User implements UserDetails {
     @Column(updatable = false)
     private Date created;
 
-    //@UpdateTimestamp
+    @UpdateTimestamp
     private Date lastActivity;
 
     @ManyToMany(mappedBy = "students")

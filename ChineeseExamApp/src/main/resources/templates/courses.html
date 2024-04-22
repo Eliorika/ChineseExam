@@ -38,8 +38,17 @@
 <div class="block_button_add container" th:if="${isAdmin}">
     <a th:href="@{/courses/new}" class="button add"><span style="margin-right: 10px;">&#43;</span> Добавить</a>
 </div>
-
+<div th:if="!${isAdmin}">
+    <span><h3 style="margin-top:35px; margin-left: 35px;">Ваши курсы</h3></span>
+    <div class="row cards container" >
+        <div th:each="course : ${checked}" class="card col-12 col-md-6 col-lg-3">
+            <a th:href="@{'/courses/' + ${course.id}}" th:text="${course.courseName}"/>
+        </div>
+    </div>
+<hr style="margin-top: 40pt">
+</div>
 <!--Блок с курсами-->
+<span><h3 style="margin-left: 35px;">Доступные курсы</h3></span>
 <div class="row cards container">
     <div th:each="course : ${courses}" class="card col-12 col-md-6 col-lg-3">
         <a th:href="@{'/courses/' + ${course.id}}" th:text="${course.courseName}"/>

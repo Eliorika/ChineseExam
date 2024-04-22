@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.rsreu.ChineseCourse.config.ReportClient;
 import ru.rsreu.ChineseCourse.dto.request.CourseInfoRequest;
 import ru.rsreu.ChineseCourse.dto.response.CourseInfoAdminResponse;
 import ru.rsreu.ChineseCourse.dto.response.LessonInfoResponse;
@@ -27,6 +28,7 @@ public class CourseController {
 
     private final ICourseService courseService;
     private final IUserService userService;
+    private final ReportClient reportClient;
 
     //admin - (course-count)
     private final Map<Long, Map<Long, Integer>> blankLessons = new HashMap<>();
@@ -42,7 +44,13 @@ public class CourseController {
         if(!user.getSystemRole().equals(SystemRole.ROLE_SUPER_ADMIN)){
             all = all.stream().filter(course -> course.getIsVisible()).toList();
         }
+
+        List<Course> checked = all.stream().filter(c-> c.getStudents().stream().anyMatch(u-> u.getId() == user.getId()) && c.getIsVisible()).toList();
+        if(user.getSystemRole() == SystemRole.ROLE_USER){
+            all = all.stream().filter(c-> c.getStudents().stream().allMatch(u-> u.getId() != user.getId()) && c.getIsVisible()).toList();
+        }
         model.addAttribute("courses", all);
+        model.addAttribute("checked", checked);
         model.addAttribute("isAdmin", user.getSystemRole().equals(SystemRole.ROLE_SUPER_ADMIN));
         return "courses";
     }
@@ -170,4 +178,17 @@ public class CourseController {
         return "redirect:/courses/" + id + "/settings";
     }
 
+    @PostMapping("/{id}/report")
+    public String generateReport(@PathVariable Integer id, Principal principal){
+        User user = userService.findByEmail(principal.getName());
+        reportClient.getUserStatReport(Math.toIntExact(user.getId()), id);
+        return "redirect:/courses/" + id;
+    }
+
+    @PostMapping("/{id}/check-in")
+    public String checkIn(@PathVariable Long id, Principal principal){
+        User user = userService.findByEmail(principal.getName());
+        courseService.checkInForCourse(id, user);
+        return "redirect:/courses/" + id;
+    }
 }

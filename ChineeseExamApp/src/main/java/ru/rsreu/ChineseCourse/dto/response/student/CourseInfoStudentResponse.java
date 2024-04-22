@@ -21,6 +21,7 @@ public class CourseInfoStudentResponse {
     private String description;
     private CourseDifficulty difficulty;
     private List<LessonInfoStudentResponse> lessons = new ArrayList<>();
+    private boolean isCheckedIn;
 
     public static CourseInfoStudentResponse fromCourseBase(Course course){
         return CourseInfoStudentResponse.builder()

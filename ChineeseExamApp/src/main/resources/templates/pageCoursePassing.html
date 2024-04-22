@@ -40,12 +40,22 @@
             <h3><span th:text="'О курсе: ' + ${course.description}"></span></h3>
             <h4><span th:text="'Сложность: ' + ${course.difficulty}"></span></h4>
         </div>
+        <div style="display: flex; justify-content: center" th:if="${course.checkedIn}">
+            <form method="post" th:action="@{'/courses/' +${course.id} + '/report'}">
+                <button class="button edit">Сохранить статистику прохождения курса в pdf</button>
+            </form>
+        </div>
+        <div style="display: flex; justify-content: center" th:if="!${course.checkedIn}">
+            <form method="post" th:action="@{'/courses/' +${course.id} + '/check-in'}">
+                <button class="button edit">Записаться на курс</button>
+            </form>
+        </div>
 
-
-        <div class="course__block" th:each="lesson : ${course.lessons}">
+        <div class="course__block" th:each="lesson : ${course.lessons}" th:if="${course.checkedIn}">
             <div style="display: flex; justify-content:space-between; align-items: center; width: 100%; margin-top: 20px;margin-bottom: 20px;">
                 <div class="course__block__name">
                     <h4><span th:text="${lesson.name}"></span></h4>
+                    <h7><span th:text="${lesson.description}"></span></h7>
                     <div class="guide" th:data-popup="'popup_'+ ${lesson.id}" onclick="openPopup(this)">
                         <img th:src="@{/images/guide.svg}" alt="guide">
                     </div>

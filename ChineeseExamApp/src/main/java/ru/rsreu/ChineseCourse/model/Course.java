@@ -21,7 +21,6 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String courseName;
 
     @ManyToMany
@@ -41,7 +40,7 @@ public class Course {
 
     private String description;
 
-    private Boolean isVisible;
+    private Boolean isVisible = false;
     @Enumerated(EnumType.STRING)
     private CourseDifficulty difficulty;
 

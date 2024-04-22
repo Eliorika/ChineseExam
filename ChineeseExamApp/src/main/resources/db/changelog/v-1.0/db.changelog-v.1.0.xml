@@ -17,9 +17,11 @@
     <include file="90-changeset-create-answer-variance-table.xml" relativeToChangelogFile="true"/>
     <include file="100-changeset-create-user-resource-table.xml" relativeToChangelogFile="true"/>
     <include file="110-changeset-assessment-resource-table.xml" relativeToChangelogFile="true"/>
-    <include file="120-changeset-add-visible-to-course-table.xml" relativeToChangelogFile="true"/>
     <include file="130-changeset-add-topic-table.xml" relativeToChangelogFile="true"/>
     <include file="140-changeset-add-topic-variant.xml" relativeToChangelogFile="true"/>
     <include file="150-changeset-add-dictionary-table.xml" relativeToChangelogFile="true"/>
     <include file="160-add-visibility-columns.xml" relativeToChangelogFile="true"/>
+    <include file="170-add-translation-procedure.xml" relativeToChangelogFile="true"/>
+    <include file="180-add-test-completed-procedure.xml" relativeToChangelogFile="true"/>
+    <include file="190-add-test-completed-procedure.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

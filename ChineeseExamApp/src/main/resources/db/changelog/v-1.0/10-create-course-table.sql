@@ -6,6 +6,7 @@ CREATE TABLE courses (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     description VARCHAR not null,
     difficulty VARCHAR(12) CHECK (Difficulty IN ('BEGINNER', 'INTERMEDIATE', 'ADVANCED')) not null,
+    is_visible boolean not null default true
 
 )
 GO
