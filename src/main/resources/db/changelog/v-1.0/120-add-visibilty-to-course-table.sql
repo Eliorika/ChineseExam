@@ -1,2 +1,2 @@
 alter TABLE courses
-    add column is_visible boolean not null default true;
+    add column if not exists is_visible boolean not null default true;
