@@ -130,7 +130,7 @@
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT users.first_name, users.last_name
+            <xml-property name="queryText"><![CDATA[SELECT first_name, last_name
 FROM users
 WHERE id = ?
 ]]></xml-property>
@@ -433,7 +433,7 @@ from get_average_correctness_last_7_days(?, ?)]]></xml-property>
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select get_resource_materials_for_user
-from public.get_resource_materials_for_user(?, ?)]]></xml-property>
+from get_resource_materials_for_user(?, ?)]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>

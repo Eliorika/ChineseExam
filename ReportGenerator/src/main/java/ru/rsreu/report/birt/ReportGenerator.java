@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -34,7 +35,7 @@ public class ReportGenerator {
     }
 
     public void generateReport(Integer userId, Integer courseId, HttpServletResponse response, HttpServletRequest request) throws EngineException, IOException, SQLException {
-        IReportRunnable reportDesign = reportEngine.openReportDesign("UserStatistics/user_answers_statistic_for_course.rptdesign"); // classpath in the result jar
+        IReportRunnable reportDesign = reportEngine.openReportDesign("UserStatistics\\user_answers_statistic_for_course.rptdesign"); // classpath in the result jar
 
         IRunAndRenderTask task = reportEngine.createRunAndRenderTask(reportDesign);
 
