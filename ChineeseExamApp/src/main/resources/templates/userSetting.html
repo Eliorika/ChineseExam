@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Setting</title>
+  <link th:href="@{/style/style.css}" rel="stylesheet">
+  <link th:href="@{/style/userSetting.css}" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant:ital,wght@0,1..1000;1,1..1000&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body style="background-color: #f6f4ef;">
+
+<!--Верхнее меню-->
+<header>
+  <div class="logo">
+    <img th:src="@{/images/logo.svg}" alt="logo" class="logo__img">
+    <p>Школа китайского языка</p>
+  </div>
+  <nav id="menu">
+    <ul class="menu">
+      <li><a th:href="@{/user}">Личный кабинет</a></li>
+      <li><a th:href="@{/courses}">Курсы</a></li>
+      <li class="exit" >
+        <a th:href="@{/login}">
+          <svg height="20" viewBox="0 0 14 14" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.55556 14C1.12778 14 0.761444 13.8478 0.456555 13.5434C0.152185 13.2386 0 12.8722 0 12.4444V9.33333H1.55556V12.4444H12.4444V1.55556H1.55556V4.66667H0V1.55556C0 1.12778 0.152185 0.761444 0.456555 0.456555C0.761444 0.152185 1.12778 0 1.55556 0H12.4444C12.8722 0 13.2386 0.152185 13.5434 0.456555C13.8478 0.761444 14 1.12778 14 1.55556V12.4444C14 12.8722 13.8478 13.2386 13.5434 13.5434C13.2386 13.8478 12.8722 14 12.4444 14H1.55556ZM5.83333 10.8889L4.74444 9.76111L6.72778 7.77778H0V6.22222H6.72778L4.74444 4.23889L5.83333 3.11111L9.72222 7L5.83333 10.8889Z"/>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<!--Кнопка назад-->
+<div class="block_button_back container">
+  <form th:action="@{/user}" th:method="get">
+    <button type="submit" class="button">
+      <img th:src="@{/images/back.svg}" alt="back">
+      Назад
+    </button>
+  </form>
+</div>
+
+
+<!--Блок с настройками-->
+<section id="user-setting" class="container">
+
+  <div class="block personal_data">
+
+    <h2>Личные данные</h2>
+
+    <form th:action="@{/user/save-changes}" method="post" class="form__personal_data" th:object="${user}">
+      <label for="name">Имя</label>
+      <input type="text" id="name" name="name" th:field="${user.firstName}">
+
+      <label for="last_name">Фамилия</label>
+      <input type="text" id="last_name" name="last_name" th:field="${user.lastName}">
+
+      <label>E-mail</label>
+      <input type="text" th:value="${user.email}" readonly>
+
+      <button class="button save">Coхранить</button>
+    </form>
+  </div>
+
+  <div class="block change_password">
+    <h2>Смена пароля</h2>
+
+    <form th:action="@{/user/save-password}" method="post" class="form__personal_data" th:object="${changePasswordReq}">
+      <label for="old_password">Старый пароль</label>
+      <input type="text" id="old_password" name="old_password" th:field="${changePasswordReq.oldPassword}">
+
+      <label for="new_password">Новый пароль</label>
+      <input type="text" id="new_password" name="new_password" th:field="${changePasswordReq.newPassword}">
+
+      <label for="confirm_password">Подтверждение пароля</label>
+      <input type="text" id="confirm_password" name="confirm_password" th:field="${changePasswordReq.confirmPassword}">
+
+      <div th:if="${param.error}">
+        <p th:text="${param.error}"></p>
+      </div>
+
+      <button class="button save">Coхранить</button>
+    </form>
+  </div>
+
+</section>
+
+</body>
+</html>
