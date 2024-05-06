@@ -1,6 +1,7 @@
 package ru.rsreu.ChineseCourse.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,24 +21,14 @@ public class ReportClient {
                 .build();
     }
 
-    public void getUserStatReport(Integer userId, Integer courseId){
-        reportWebClient.post()
+    public byte[] getUserStatReport(Integer userId, Integer courseId){
+        byte[] reportBytes = reportWebClient.post()
                 .uri("/report?userId={userId}&courseId={courseId}", userId, courseId)
                 .retrieve()
-                .bodyToMono(Void.class)
-                .doOnError(WebClientResponseException.class, e -> {
-                    // Обработка ошибки
-                })
-                .subscribe(response -> {
-                    // JavaScript для открытия отчета в новой вкладке
-                    String script = "window.open('/path/to/generated/report', '_blank');";
-                    // Здесь '/path/to/generated/report' должен быть путь к вашему сгенерированному отчету на сервере
-                    // Этот путь должен быть возвращен в ответе от сервера после генерации отчета
+                .bodyToMono(byte[].class)
+                .block();
 
-                    // Выполнение JavaScript на стороне клиента
-                    webEngine.executeScript(script);
-                });
-                //.block();
+        return reportBytes;
     }
 
 

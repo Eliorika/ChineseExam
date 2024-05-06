@@ -178,11 +178,12 @@ public class CourseController {
         return "redirect:/courses/" + id + "/settings";
     }
 
-    @PostMapping("/{id}/report")
-    public String generateReport(@PathVariable Integer id, Principal principal){
+    @GetMapping("/{id}/report")
+    @ResponseBody
+    public byte[] generateReport(@PathVariable Integer id, Principal principal){
         User user = userService.findByEmail(principal.getName());
-        reportClient.getUserStatReport(Math.toIntExact(user.getId()), id);
-        return "redirect:/courses/" + id;
+        return reportClient.getUserStatReport(Math.toIntExact(user.getId()), id);
+        //return "redirect:/courses/" + id;
     }
 
     @PostMapping("/{id}/check-in")

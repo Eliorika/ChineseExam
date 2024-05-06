@@ -41,9 +41,9 @@
             <h4><span th:text="'Сложность: ' + ${course.difficulty}"></span></h4>
         </div>
         <div style="display: flex; justify-content: center" th:if="${course.checkedIn}">
-            <form method="post" th:action="@{'/courses/' +${course.id} + '/report'}">
-                <button class="button edit">Сохранить статистику прохождения курса в pdf</button>
-            </form>
+<!--            <form method="post" th:action="@{'/courses/' +${course.id} + '/report'}">-->
+                <button class="button edit" th:data-course="${course.id}" onclick="getReport(this)">Сохранить статистику прохождения курса в pdf</button>
+<!--            </form>-->
         </div>
         <div style="display: flex; justify-content: center" th:if="!${course.checkedIn}">
             <form method="post" th:action="@{'/courses/' +${course.id} + '/check-in'}">
@@ -105,16 +105,46 @@
 
         var lesson_id = parseInt(name.replace("popup_","").trim());
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/lesson/'+lesson_id, true); // true для асинхронного запроса
+        xhr.open('POST', '/lesson/' + lesson_id, true); // true для асинхронного запроса
         xhr.send();
     }
 
     function closePopup(element) {
         var name = element.getAttribute('data-popup');
-        console.log(name)
+        console.log(name);
         var popup = document.getElementById(name);
         popup.style.display = 'none';
 
+    }
+
+    function getReport(element){
+        var course_id = element.getAttribute('data-course');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET','/courses/' + course_id + '/report' , true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var blob = new Blob([xhr.response], { type: 'application/pdf' }); // Создаем Blob из массива байтов
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'report.pdf'; // Указываем имя файла для скачивания
+                link.click();
+            }
+        };
+
+        xhr.send();
+        // console.log(course_id);
+        // fetch('/courses/' + course_id + '/report', {method: 'POST'})
+        //     .then(
+        //         response =>{
+        //             var t = response.text()
+        //             console.log(t)
+        //         }
+        //     )
+        //     .then(dataUrl => {
+        //         const newTab = window.open(dataUrl, '_blank');
+        //         newTab.focus();
+        //     });;
     }
 </script>
 

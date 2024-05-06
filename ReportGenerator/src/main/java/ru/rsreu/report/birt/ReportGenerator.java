@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Base64;
 
 
 @Component
@@ -34,21 +36,25 @@ public class ReportGenerator {
         }
     }
 
-    public void generateReport(Integer userId, Integer courseId, HttpServletResponse response, HttpServletRequest request) throws EngineException, IOException, SQLException {
+    public byte[] generateReport(Integer userId, Integer courseId, HttpServletResponse response, HttpServletRequest request) throws EngineException, IOException, SQLException {
         IReportRunnable reportDesign = reportEngine.openReportDesign("UserStatistics\\user_answers_statistic_for_course.rptdesign"); // classpath in the result jar
 
         IRunAndRenderTask task = reportEngine.createRunAndRenderTask(reportDesign);
 
-        response.setContentType(reportEngine.getMIMEType("pdf"));
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=report.pdf");
 
         PDFRenderOption pdfRenderOption = new PDFRenderOption();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         pdfRenderOption.setOutputFormat(HTMLRenderOption.OUTPUT_FORMAT_PDF);
 
         task.setRenderOption(pdfRenderOption);
-        pdfRenderOption.setOutputStream(response.getOutputStream());
+        pdfRenderOption.setOutputStream(outputStream);
         task.getAppContext().put("OdaJDBCDriverPassInConnection", dataSource.getConnection());
         task.setParameter("UserId", userId, "");
         task.setParameter("CourseId", courseId, "");
         task.run();
+        task.close();
+        return outputStream.toByteArray();
     }
 }
