@@ -1,12 +1,16 @@
 package ru.rsreu.ChineseCourse.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.rsreu.ChineseCourse.dto.QuestionInfoDto;
 import ru.rsreu.ChineseCourse.exception.NotFoundException;
 import ru.rsreu.ChineseCourse.model.Question;
+import ru.rsreu.ChineseCourse.model.User;
 import ru.rsreu.ChineseCourse.repo.IQuestionRepo;
 import ru.rsreu.ChineseCourse.service.IQuestionService;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +43,30 @@ public class QuestionServiceImpl implements IQuestionService {
         return question;
     }
 
+    @Override
+    @Transactional
+    public Question updateQuestion(QuestionInfoDto questionInfoDto, User admin){
+        Question question = findById(questionInfoDto.getId());
+        question.setQuestion(questionInfoDto.getQuestion());
+        question.setAnswer(questionInfoDto.getAnswer());
+        question.setQuestionType(question.getQuestionType());
+        question.setAdmin(admin);
+        question.setCardText(questionInfoDto.getCardText());
+        question.setVariants(questionInfoDto.getVariants());
+        question.setTopic(questionInfoDto.getTopic());
+        question.setEditDate(new Date());
+        question.setGenerated(question.isGenerated());
+        question.setTest(questionInfoDto.isTest());
+        return  questionRepo.save(question);
+    }
+
+    @Override
+    @Transactional
+    public Question deleteQuestion(Long questionId){
+        Question question = findById(questionId);
+        questionRepo.delete(question);
+        return question;
+    }
     @Override
     public void addGeneratedQuestion(Long id, Question question) {
         generatedQuestions.put(id, question);

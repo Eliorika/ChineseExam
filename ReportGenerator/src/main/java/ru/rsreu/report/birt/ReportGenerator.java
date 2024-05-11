@@ -21,7 +21,7 @@ public class ReportGenerator {
     private IReportEngine reportEngine;
     public DataSource dataSource;
 
-    public ReportGenerator (DataSource parDataSource) throws BirtException {
+    public ReportGenerator (@Qualifier("datasource") DataSource parDataSource) throws BirtException {
         EngineConfig config = new EngineConfig();
         Platform.startup(config);
         IReportEngineFactory factory = (IReportEngineFactory) Platform.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);

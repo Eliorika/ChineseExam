@@ -15,23 +15,21 @@ services:
     volumes:
       - ./volumes/postgres_data:/var/lib/postgresql/data/
 
-#  liquibase-migrations:
-#    image: liquibase/liquibase:4.18
-#    depends_on:
-#      - postgres
-#    command:
-#      - --hub-mode=off
-#      - --changelog-file=master.xml
-#      - --driver=org.postgresql.Driver
-#      - --url=jdbc:postgresql://postgres:5432/chinese_course
-#      - --username=arina
-#      - --password=0000
-#      - update
-#    volumes:
-#      - ./src/main/resources/db/changelog:/liquibase/changelog
-#    networks:
-#      - backend
-#    restart: on-failure
+  report-generator:
+    container_name: report-generator
+    build:
+      context: ./ReportGenerator
+    links:
+      - postgres:postgres
+    expose:
+      - 8089
+    ports:
+      - 8089:8089
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./volumes/report_data:/root/.m2
 
 networks:
   backend: {}

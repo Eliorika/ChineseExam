@@ -65,7 +65,9 @@
                     <div class="course__block__test" th:each="test : ${lesson.tests}">
                         <form th:action="@{'/test/' + ${test.id}}" method="get">
                             <button th:classappend="${test.isAvailable} ? (${test.isPassed} ? 'passed' : 'available') : 'disabled'"
-                                    th:text="${test.id}" th:disabled="${!test.isAvailable}"></button>
+                                    th:disabled="${!test.isAvailable}">
+                                <img th:src="${test.isPassed} ?  '/images/check-mark.svg':'/images/question-sign.svg'" alt="question">
+                            </button>
                         </form>
                     </div>
                 </div>

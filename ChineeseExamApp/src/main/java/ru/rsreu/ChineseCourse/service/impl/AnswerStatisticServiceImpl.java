@@ -21,6 +21,7 @@ public class AnswerStatisticServiceImpl implements IAnswerStatisticService {
     private final IUserRepo userRepo;
 
     @Transactional
+    @Override
     public void saveStatistics(List<AnswerStatistic> answerStatisticList){
         for (AnswerStatistic ans: answerStatisticList){
             AnswerStatisticPk answerStatisticPk = new AnswerStatisticPk();
@@ -36,7 +37,5 @@ public class AnswerStatisticServiceImpl implements IAnswerStatisticService {
             user.setLastActivity(new Date());
             userRepo.save(user);
         }
-
-
     }
 }

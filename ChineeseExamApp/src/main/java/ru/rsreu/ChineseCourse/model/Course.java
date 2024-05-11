@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.rsreu.ChineseCourse.model.enums.CourseDifficulty;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class Course {
     private User admin;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
-    private List<Lesson> lessons;
+    private List<Lesson> lessons = new ArrayList<>();
 
     @Override
     public String toString(){

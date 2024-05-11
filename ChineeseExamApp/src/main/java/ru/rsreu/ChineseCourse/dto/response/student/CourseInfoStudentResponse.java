@@ -2,7 +2,6 @@ package ru.rsreu.ChineseCourse.dto.response.student;
 
 
 import lombok.*;
-import ru.rsreu.ChineseCourse.dto.response.LessonInfoResponse;
 import ru.rsreu.ChineseCourse.model.Course;
 import ru.rsreu.ChineseCourse.model.enums.CourseDifficulty;
 

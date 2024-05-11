@@ -7,9 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.rsreu.ChineseCourse.config.ReportClient;
+import ru.rsreu.ChineseCourse.dto.LessonInfoDto;
 import ru.rsreu.ChineseCourse.dto.request.CourseInfoRequest;
 import ru.rsreu.ChineseCourse.dto.response.CourseInfoAdminResponse;
-import ru.rsreu.ChineseCourse.dto.response.LessonInfoResponse;
+import ru.rsreu.ChineseCourse.dto.LessonInfoDto;
 import ru.rsreu.ChineseCourse.dto.response.QuestionInfoResponse;
 import ru.rsreu.ChineseCourse.model.Course;
 import ru.rsreu.ChineseCourse.model.User;
@@ -109,40 +110,40 @@ public class CourseController {
     @GetMapping("/{id}/settings")
     @PreAuthorize("isSuperAdmin()")
     public String courseSettings(Principal principal, Model model, @PathVariable Long id){
-        User admin = userService.findByEmail(principal.getName());
-        Course course = courseService.getById(id);
-        List<LessonInfoResponse> lessons = new ArrayList<>(course.getLessons().stream()
-                .map(LessonInfoResponse::fromLesson).toList());
-        try{
-            Integer count = blankLessons.get(admin.getId()).get(id);
-            for (int i = 0; i < count; i++){
-                var les = new LessonInfoResponse();
-                les.setCourseId(id);
-                lessons.add(les);
-            }
-
-
-        } catch (Exception e){
-
-        }
-
-        try {
-            Integer count = blankQuestions.get(admin.getId()).get(id);
-            var addLes = lessons.stream()
-                    .filter(les -> les.getId() == id)
-                    .findFirst().orElse(null);
-
-            for (int i = 0; i < count; i++){
-                var q = new QuestionInfoResponse();
-                var ls = new ArrayList<>(addLes.getQuestions());
-                        ls.add(q);
-                addLes.setQuestions(ls);
-            }
-
-        } catch (Exception e){
-
-        }
-        model.addAttribute("lessons", lessons);
+//        User admin = userService.findByEmail(principal.getName());
+//        Course course = courseService.getById(id);
+//        List<LessonInfoDto> lessons = new ArrayList<>(course.getLessons().stream()
+//                .map(LessonInfoDto::fromLesson).toList());
+//        try{
+//            Integer count = blankLessons.get(admin.getId()).get(id);
+//            for (int i = 0; i < count; i++){
+//                var les = new LessonInfoDto();
+//                les.setCourseId(id);
+//                lessons.add(les);
+//            }
+//
+//
+//        } catch (Exception e){
+//
+//        }
+//
+//        try {
+//            Integer count = blankQuestions.get(admin.getId()).get(id);
+//            var addLes = lessons.stream()
+//                    .filter(les -> les.getId() == id)
+//                    .findFirst().orElse(null);
+//
+//            for (int i = 0; i < count; i++){
+//                var q = new QuestionInfoResponse();
+//                var ls = new ArrayList<>(addLes.getQuestions());
+//                        ls.add(q);
+//                addLes.setQuestions(ls);
+//            }
+//
+//        } catch (Exception e){
+//
+//        }
+//        model.addAttribute("lessons", lessons);
         return "settingCourse";
     }
 

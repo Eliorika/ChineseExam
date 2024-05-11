@@ -1,5 +1,7 @@
 package ru.rsreu.ChineseCourse.service;
 
+import jakarta.transaction.Transactional;
+import ru.rsreu.ChineseCourse.dto.QuestionInfoDto;
 import ru.rsreu.ChineseCourse.dto.TestQuestionsDto;
 import ru.rsreu.ChineseCourse.dto.request.CourseInfoRequest;
 import ru.rsreu.ChineseCourse.model.Course;
@@ -13,6 +15,12 @@ public interface IQuestionService {
     boolean checkAnswer(Long questionId, String answer);
 
     Question findById(Long id);
+
+    @Transactional
+    Question updateQuestion(QuestionInfoDto questionInfoDto, User admin);
+
+    @Transactional
+    Question deleteQuestion(Long questionId);
 
     void addGeneratedQuestion(Long id, Question question);
 
