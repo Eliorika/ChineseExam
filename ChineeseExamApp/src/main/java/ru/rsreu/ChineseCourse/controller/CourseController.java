@@ -110,8 +110,8 @@ public class CourseController {
     @GetMapping("/{id}/settings")
     @PreAuthorize("isSuperAdmin()")
     public String courseSettings(Principal principal, Model model, @PathVariable Long id){
-//        User admin = userService.findByEmail(principal.getName());
-//        Course course = courseService.getById(id);
+        User admin = userService.findByEmail(principal.getName());
+        Course course = courseService.getById(id);
 //        List<LessonInfoDto> lessons = new ArrayList<>(course.getLessons().stream()
 //                .map(LessonInfoDto::fromLesson).toList());
 //        try{
@@ -144,7 +144,7 @@ public class CourseController {
 //
 //        }
 //        model.addAttribute("lessons", lessons);
-        return "settingCourse";
+        return "admin/adminPageCourseTests";
     }
 
     @PostMapping("/{id}/settings/add-lesson")
